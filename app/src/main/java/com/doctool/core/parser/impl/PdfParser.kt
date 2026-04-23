@@ -116,9 +116,9 @@ class PdfParser(private val context: Context) : DocumentParser {
         val sizeInKB = file.length() / 1024
         return when {
             sizeInKB < 100 -> 1
-            sizeInKB < 500 -> (sizeInKB / 100).coerceAtLeast(1)
-            sizeInKB < 2000 -> (sizeInKB / 200).coerceAtLeast(2)
-            else -> (sizeInKB / 300).coerceAtLeast(5).coerceAtMost(100)
+            sizeInKB < 500 -> ((sizeInKB / 100).coerceAtLeast(1)).toInt()
+            sizeInKB < 2000 -> ((sizeInKB / 200).coerceAtLeast(2)).toInt()
+            else -> ((sizeInKB / 300).coerceAtLeast(5).coerceAtMost(100)).toInt()
         }
     }
     
@@ -184,6 +184,6 @@ data class TextMetrics(
     val averageCharHeight: Float,
     val averageCharWidth: Float,
     val lineHeights: List<Float>,
-    val charCount: Int,
-    val lineCount: Int
+    val charCount,
+    val lineCount
 )
