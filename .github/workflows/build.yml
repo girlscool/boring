@@ -17,50 +17,18 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
-        
-    - name: Install Android SDK
+    
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v3
+    
+    - name: Build with Gradle
       run: |
-        apt-get update -qq
-        apt-get install -y -qq android-sdk android-sdk-build-tools > /dev/null 2>&1
-        echo "Android SDK installed"
-        
-    - name: Create APK
-      run: |
-        export ANDROID_HOME=/usr/lib/android-sdk
-        export PATH=$PATH:$ANDROID_HOME/build-tools/29.0.3
-        
-        mkdir -p app/build/outputs/apk/debug
-        
-        # 创建临时构建目录
-        cd /tmp
-        mkdir -p apk_build/res
-        cd apk_build
-        
-        # 创建AndroidManifest.xml
-        cat > AndroidManifest.xml << 'ANDROIDEOF'
-        <?xml version="1.0" encoding="utf-8"?>
-        <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-            package="com.doctool.app">
-            <application android:label="DocTool">
-                <activity android:name=".MainActivity">
-                    <intent-filter>
-                        <action android:name="android.intent.action.MAIN" />
-                        <category android:name="android.intent.category.LAUNCHER" />
-                    </intent-filter>
-                </activity>
-            </application>
-        </manifest>
-        ANDROIDEOF
-        
-        # 使用aapt打包
-        aapt package -f -M AndroidManifest.xml -S res -I $ANDROID_HOME/platforms/android-34/android.jar -F app.apk 2>/dev/null || \
-        aapt package -f -M AndroidManifest.xml -S res -I $ANDROID_HOME/platforms/android-30/android.jar -F app.apk 2>/dev/null || \
-        echo "Creating simple APK" > app.apk
-        
-        cp app.apk /home/runner/work/boring/boring/app/build/outputs/apk/debug/app-debug.apk
-        
+        chmod +x gradlew
+        ./gradlew assembleDebug --no-daemon
+    
     - name: Upload APK
       uses: actions/upload-artifact@v4
       with:
         name: DocTool-APK
         path: app/build/outputs/apk/debug/app-debug.apk
+        retention-days: 30
