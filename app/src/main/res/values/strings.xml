@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">DocTool</string>
+    <string name="action_settings">设置</string>
+    <string name="file_operation">文件操作</string>
+    <string name="format_edit">格式编辑</string>
+    <string name="template_library">模板库</string>
+    <string name="save_template">保存为模板</string>
+    <string name="apply_template">使用模板</string>
+    <string name="apply_changes">应用更改</string>
+    <string name="reset">重置</string>
+    <string name="browse_files">浏览文件</string>
+    <string name="new_template">新建模板</string>
+</resources>
