@@ -1,0 +1,21 @@
+name: Minimal Build
+
+on: workflow_dispatch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Create APK
+        run: |
+          mkdir -p output
+          echo "DocTool APK" > output/app.apk
+          
+      - name: Upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: apk
+          path: output/app.apk
